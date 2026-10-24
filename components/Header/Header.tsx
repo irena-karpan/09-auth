@@ -18,7 +18,7 @@ export default function Header() {
           </li>
           {/* <AuthNavigation /> */}
           <li>
-            <Link href="/sign-up">Sing-up</Link>
+            <Link href="/sign-in">Sing-in</Link>
           </li>
         </ul>
       </nav>

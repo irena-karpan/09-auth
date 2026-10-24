@@ -49,11 +49,13 @@ export async function deleteNote(noteID: string): Promise<Note> {
 
 export async function register(userData: RegisterRequest): Promise<User> {
   const response = await nextServer.post<User>("/auth/register", userData);
-  console.log(response);
   return response.data;
 }
 
-// export async function login() { }
+export async function login(userData: RegisterRequest): Promise<User> {
+  const response = await nextServer.post<User>("/auth/login", userData);
+  return response.data;
+}
 
 // export async function logout() { }
 

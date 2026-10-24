@@ -63,8 +63,7 @@ export default function SingUp() {
             Register
           </button>
         </div>
-
-        <p className={css.error}>Error</p>
+        {error && <p className={css.error}>Error</p>}
       </form>
     </main>
   );
