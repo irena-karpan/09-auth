@@ -1,15 +1,18 @@
 "use client";
 
-import { login, RegisterRequest } from "@/lib/api/clientApi";
+import { checkSession, login, RegisterRequest } from "@/lib/api/clientApi";
 import css from "./SignInPage.module.css";
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AxiosError } from "axios";
+import { useAuthStore } from "@/lib/store/authStore";
 
 export default function SingIn() {
   const [error, setError] = useState("");
   const router = useRouter();
+
+  const setUser = useAuthStore((state) => state.setUser);
 
   const handleSubmit = async (formData: FormData) => {
     const formValues = Object.fromEntries(
@@ -20,6 +23,7 @@ export default function SingIn() {
       const response = await login(formValues);
 
       if (response) {
+        setUser(response);
         router.push("/profile");
       } else {
         setError("Invalid email or password");

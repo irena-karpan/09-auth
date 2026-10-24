@@ -16,6 +16,10 @@ export interface RegisterRequest {
   password: string;
 }
 
+export interface SessionRequest {
+  success: boolean;
+}
+
 export async function fetchNotes(
   search: string,
   page: number,
@@ -57,10 +61,18 @@ export async function login(userData: RegisterRequest): Promise<User> {
   return response.data;
 }
 
-// export async function logout() { }
+export async function logout(): Promise<void> {
+  await nextServer.post("/auth/logout");
+}
 
-// export async function checkSession() { }
+export async function checkSession(): Promise<boolean> {
+  const response = await nextServer.get<SessionRequest>("/auth/session");
+  return response.data.success;
+}
 
-// export async function getMe() { }
+export async function getMe(): Promise<User> {
+  const response = await nextServer.get<User>("/users/me");
+  return response.data;
+}
 
 // export async function updateMe() {}
