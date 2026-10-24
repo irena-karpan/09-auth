@@ -11,3 +11,9 @@ export interface NewNote {
   content: string;
   tag: string;
 }
+
+export interface User {
+  username: string;
+  email: string;
+  avatar: string;
+}

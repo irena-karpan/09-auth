@@ -1,5 +1,6 @@
 import Link from "next/link";
 import css from "./Header.module.css";
+// import AuthNavigation from "../AuthNavigation/AuthNavigation";
 
 export default function Header() {
   return (
@@ -14,6 +15,10 @@ export default function Header() {
           </li>
           <li>
             <Link href="/notes/filter/all">Notes</Link>
+          </li>
+          {/* <AuthNavigation /> */}
+          <li>
+            <Link href="/sign-up">Sing-up</Link>
           </li>
         </ul>
       </nav>
