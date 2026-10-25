@@ -16,9 +16,10 @@ export default function EditProfile() {
   const [userName, setUserName] = useState(user?.username ?? "");
   const [error, setError] = useState<string>("");
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (formData: FormData) => {
     setError("");
-    const updatedUser = await updateMe({ username: userName });
+    const formUsername = formData.get("username") as string;
+    const updatedUser = await updateMe({ username: formUsername });
     if (updatedUser) {
       setUser(updatedUser);
       router.push("/profile");
@@ -51,6 +52,7 @@ export default function EditProfile() {
             <div className={css.usernameWrapper}>
               <label htmlFor="username">Username:</label>
               <input
+                name="username"
                 id="username"
                 type="text"
                 className={css.input}
