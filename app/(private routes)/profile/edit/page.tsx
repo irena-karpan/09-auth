@@ -16,8 +16,7 @@ export default function EditProfile() {
   const [userName, setUserName] = useState(user?.username ?? "");
   const [error, setError] = useState<string>("");
 
-  const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
     setError("");
     const updatedUser = await updateMe({ username: userName });
     if (updatedUser) {
@@ -48,7 +47,7 @@ export default function EditProfile() {
             className={css.avatar}
           />
 
-          <form className={css.profileInfo} onSubmit={handleSubmit}>
+          <form className={css.profileInfo} action={handleSubmit}>
             <div className={css.usernameWrapper}>
               <label htmlFor="username">Username:</label>
               <input
