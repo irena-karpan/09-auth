@@ -1,6 +1,7 @@
 // import axios from "axios";
 
-import type { Note, NewNote, User } from "../../types/note";
+import { User } from "@/types/user";
+import type { Note, NewNote } from "../../types/note";
 import { nextServer } from "./api";
 
 // axios.defaults.baseURL = "https://notehub-public.goit.study/api";
