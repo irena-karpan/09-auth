@@ -30,7 +30,7 @@ export default function AuthNavigation() {
 
       <li className={css.navigationItem}>
         <p className={css.userEmail}>{user?.email}</p>
-        <button className={css.logoutButton} onClick={handleLogout}>
+        <button onClick={handleLogout} className={css.logoutButton}>
           Logout
         </button>
       </li>
