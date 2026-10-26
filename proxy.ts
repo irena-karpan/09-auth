@@ -9,12 +9,12 @@ export default async function proxy(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
-  const isPrivateRoute = privateRoutes.some((route) =>
-    pathname.startsWith(route),
-  );
-  const isPublicRoute = publicRoutes.some((route) =>
-    pathname.startsWith(route),
-  );
+  const matchesRoute = (route: string) => {
+    return pathname === route || pathname.startsWith(`${route}/`);
+  };
+
+  const isPrivateRoute = privateRoutes.some((route) => matchesRoute(route));
+  const isPublicRoute = publicRoutes.some((route) => matchesRoute(route));
 
   const cookieStore = await cookies();
 
@@ -30,31 +30,37 @@ export default async function proxy(request: NextRequest) {
 
       if (setCookie) {
         const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie];
+
+        const response = isPublicRoute
+          ? NextResponse.redirect(new URL("/", request.url))
+          : NextResponse.next();
+
         for (const cookieStr of cookieArray) {
           const parsed = parseSetCookie(cookieStr);
 
           if (parsed.value) {
-            cookieStore.set(parsed.name, parsed.value, parsed);
+            response.cookies.set(parsed.name, parsed.value, parsed);
           }
         }
 
-        // Якщо сесія все ще активна:
-        // для публічного маршруту — виконуємо редірект на головну.
-        if (isPublicRoute) {
-          return NextResponse.redirect(new URL("/", request.url), {
-            headers: {
-              Cookie: cookieStore.toString(),
-            },
-          });
-        }
-        // для приватного маршруту — дозволяємо доступ
-        if (isPrivateRoute) {
-          return NextResponse.next({
-            headers: {
-              Cookie: cookieStore.toString(),
-            },
-          });
-        }
+        // // Якщо сесія все ще активна:
+        // // для публічного маршруту — виконуємо редірект на головну.
+        // if (isPublicRoute) {
+        //   return NextResponse.redirect(new URL("/", request.url), {
+        //     headers: {
+        //       Cookie: cookieStore.toString(),
+        //     },
+        //   });
+        // }
+        // // для приватного маршруту — дозволяємо доступ
+        // if (isPrivateRoute) {
+        //   return NextResponse.next({
+        //     headers: {
+        //       Cookie: cookieStore.toString(),
+        //     },
+        //   });
+        // }
+        return response;
       }
     }
     // Якщо refreshToken або сесії немає:
